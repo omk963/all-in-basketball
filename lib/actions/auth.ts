@@ -5,9 +5,19 @@ import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { hash } from "bcryptjs";
 import { signIn } from "@/auth";
+import { headers } from "next/headers";
+import ratelimit from "../ratelimit";
+import { redirect } from "next/navigation";
 
 export const signInWithCredentials = async (params: Pick<AuthCredentials, 'email' | 'password'>) => {
     const { email, password } = params;
+
+    const ip = (await headers()).get('x-forwarded-for') || '127.0.0.1';
+    const { success } = await ratelimit.limit(ip)
+
+    if (!success) {
+        redirect('/too-fast');
+    }
 
     try {
         const res = await signIn('credentials', { email, password, redirect: false });
@@ -25,6 +35,13 @@ export const signInWithCredentials = async (params: Pick<AuthCredentials, 'email
 
 export const signUp = async (params: AuthCredentials) => {
     const { image, firstName, lastName, email, password } = params;
+
+    const ip = (await headers()).get('x-forwarded-for') || '127.0.0.1';
+    const { success } = await ratelimit.limit(ip)
+
+    if (!success) {
+        redirect('/too-fast');
+    }
 
     // Check if user exists
     const existingUser = await db
@@ -50,7 +67,7 @@ export const signUp = async (params: AuthCredentials) => {
         })
 
         await signInWithCredentials({ email, password });
-        
+
         return { success: true };
     } catch (error) {
         console.log('Signup error')
