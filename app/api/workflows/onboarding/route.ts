@@ -15,7 +15,7 @@ const THREE_DAYS = 3 * ONE_DAY; // 3 days in milliseconds
 const ONE_MONTH = 30 * ONE_DAY; // 30 days in milliseconds
 
 const getUserState = async (email: string): Promise<UserState> => {
-    const user = await db.select().from(users).where(eq(users.id, session?.user?.id)).limit(1);
+    const user = await db.select().from(users).where(eq(users.email, email)).limit(1);
 
     if (user.length === 0) {
         return "non-active"; // Default to non-active if user not found
@@ -29,6 +29,8 @@ const getUserState = async (email: string): Promise<UserState> => {
         // User has been inactive for more than 3 days but less than or equal to 1 month
         return "non-active";
     }
+
+    return "active"; // User is active or has been inactive for less than 3 daysb 
 }
 
 export const { POST } = serve<InitialData>(async (context) => {
