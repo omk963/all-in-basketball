@@ -6,6 +6,9 @@ import { db } from "./database/drizzle";
 import { users } from "./database/schema";
 import { eq } from "drizzle-orm";
 
+import { useSession } from "next-auth/react";
+
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: {
     strategy: "jwt",
@@ -27,7 +30,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
-        const validPassword = compare(credentials.password.toString(), user[0].password);
+        const validPassword = await compare(credentials.password.toString(), user[0].password);
 
         if (!validPassword) {
           return null;
@@ -38,6 +41,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           email: user[0].email,
           firstName: user[0].firstName,
           lastName: user[0].lastName,
+          image: user[0].image,
         } as User;
       },
 
@@ -49,7 +53,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.name = user.name;
+        token.email = user.email;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
+        token.image = user.image;
       }
 
       return token;
@@ -57,7 +64,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
-        session.user.name = token.name as string;
+        session.user.email = token.email as string;
+        session.user.firstName = token.firstName as string;
+        session.user.lastName = token.lastName as string;
+        session.user.image = token.image as string;
       }
 
       return session;

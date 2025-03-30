@@ -4,10 +4,14 @@ import { eq } from "drizzle-orm";
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { hash } from "bcryptjs";
-import { signIn } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { headers } from "next/headers";
 import ratelimit from "../ratelimit";
 import { redirect } from "next/navigation";
+import { Session } from "next-auth";
+import { AuthCredentials } from "@/types";
+import { workflowClient } from "../workflow";
+import config from "../config";
 
 export const signInWithCredentials = async (params: Pick<AuthCredentials, 'email' | 'password'>) => {
     const { email, password } = params;
@@ -66,11 +70,30 @@ export const signUp = async (params: AuthCredentials) => {
             password: hashedPassword,
         })
 
+        await workflowClient.trigger({
+            url: `${config.env.prodApiEndpoint}/api/workflow/onboarding`,
+            body: {
+                email,
+                firstName,
+            }
+        })
+
         await signInWithCredentials({ email, password });
 
         return { success: true };
     } catch (error) {
         console.log('Signup error')
         return { success: false, error: 'Signup error' };
+    }
+}
+
+export const getSession = async () => {
+    try {
+        const session = await auth();
+        return session ? true : false;
+
+    } catch (error) {
+        console.log('Get session error')
+        return false;
     }
 }
