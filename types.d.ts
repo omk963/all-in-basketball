@@ -6,6 +6,18 @@ interface AuthCredentials {
     password: string;
 }
 
+interface Jersey {
+    id: string;
+    number: string;
+    description: string;
+    borrowed: boolean;
+}
+
+interface BorrowedJerseyParams {
+    jerseyId: string;
+    userId: string;
+}
+
 import "next-auth";
 
 declare module "next-auth" {

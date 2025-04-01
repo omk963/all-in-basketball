@@ -12,3 +12,9 @@ export const signInSchema = z.object({
     email: z.string().email(),
     password: z.string().min(8),
 })
+
+export const jerseySchema = z.object({
+    number: z.string().min(1).max(2),
+    description: z.string().min(10).max(1000),
+    borrowed: z.boolean(),
+})
