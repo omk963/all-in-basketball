@@ -23,7 +23,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
         .then((res) => res[0]?.isAdmin === "ADMIN" || res[0]?.isAdmin === "MODERATOR");
 
     if (!isAdmin) {
-        redirect('/dashboard')
+        redirect('/dashboard');
     }
 
     return (
