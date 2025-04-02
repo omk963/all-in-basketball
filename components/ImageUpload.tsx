@@ -26,9 +26,10 @@ const authenticator = async () => {
     }
 }
 
-const ImageUpload = ({ onFileChange}: {onFileChange: (filePath: string) => void}) => {
-    const ikUploadRef = useRef(null)
-    const [file, setFile] = useState<{ filePath: string } | null>(null)
+const ImageUpload = ({ onFileChange }: { onFileChange: (filePath: string) => void }) => {
+    const ikUploadRef = useRef(null);
+    const [file, setFile] = useState<{ filePath: string } | null>(null);
+    const [progress, setProgress] = useState(0);
 
     const onError = (error: any) => {
         console.log(error)
@@ -51,10 +52,20 @@ const ImageUpload = ({ onFileChange}: {onFileChange: (filePath: string) => void}
 
     return (
         <ImageKitProvider publicKey={publicKey} urlEndpoint={urlEndpoint} authenticator={authenticator}>
-            <IKUpload ref={ikUploadRef} onError={onError} onSuccess={onSuccess} fileName="test-upload.png" />
+            <IKUpload
+                ref={ikUploadRef}
+                onError={onError}
+                onSuccess={onSuccess}
+                onUploadStart={() => setProgress(0)}
+                onUploadProgress={({ loaded, total }) => {
+                    const percent = Math.round((loaded / total) * 100);
+                    setProgress(percent);
+                }}
+                accept={'image/*'}
+            />
             <button onClick={(e) => {
                 e.preventDefault();
-                if(ikUploadRef.current) {
+                if (ikUploadRef.current) {
                     // @ts-ignore
                     ikUploadRef.current?.click();
                 }
@@ -63,7 +74,19 @@ const ImageUpload = ({ onFileChange}: {onFileChange: (filePath: string) => void}
                 <p>Upload a File</p>
                 {file && <p>{file.filePath}</p>}
 
+                {file && (
+                    <p>{ file.filePath}</p>
+                )}
+
             </button>
+
+            {progress > 0 && progress !== 100 && (
+                <div className='w-full rounded-full bg-green-200'>
+                    <div style={{ width: `${progress}%` }}>
+                        {progress}%
+                    </div>
+                </div>
+            )}
 
             {file && (
                 <IKImage
@@ -71,6 +94,7 @@ const ImageUpload = ({ onFileChange}: {onFileChange: (filePath: string) => void}
                     path={file.filePath}
                     width={500}
                     height={500}
+                    style={{ borderRadius: '50%' }}
                 />
             )}
         </ImageKitProvider>

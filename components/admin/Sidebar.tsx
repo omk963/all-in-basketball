@@ -12,22 +12,26 @@ const Sidebar = ({ session }: { session: Session }) => {
     const pathname = usePathname();
 
     return (
-        <div>
+        <div className="admin-sidebar">
             <div>
-                <div>
-                    <Image src='../../public/logo.svg' alt='logo' height={37} width={37} className="rounded-full" />
-                </div>
-                <div>
+                <Image src='/logo.svg' alt='logo' height={100} width={180} />
+
+                <div className="mt-10 flex flex-col gap-5">
                     {adminSideBarLinks.map((link) => {
                         const isSelected = (link.route !== '/admin' && pathname.includes(link.route) && link.route.length > 1) || pathname === link.route;
 
                         return (
                             <Link href={link.route} key={link.route}>
-                                <div className={cn('link', isSelected && 'bg-primary-admin shadow-sm')}>
-                                    <div>
-                                        <Image src={link.img} alt='icon' fill className={`${isSelected ? 'brightness-0 invert' : ''} object-contain`} />
+                                <div className={cn('link', isSelected && 'bg-primary-admin shadow-sm flex flex-row')}>
+                                    <div className="relative size-6">
+                                        <Image
+                                            src={link.img}
+                                            alt='icon'
+                                            fill
+                                            className={`object-contain`}
+                                        />
                                     </div>
-                                    <p className={cn(isSelected ? 'text-white' : 'text-black')}>{link.text}</p>
+                                    <p className={cn(isSelected ? 'font-bold' : 'font-normal')}>{link.text}</p>
                                 </div>
                             </Link>
                         )

@@ -30,7 +30,7 @@ const getUserState = async (email: string): Promise<UserState> => {
         return "non-active";
     }
 
-    return "active"; // User is active or has been inactive for less than 3 daysb 
+    return "active"; // User is active or has been inactive for less than 3 days 
 }
 
 export const { POST } = serve<InitialData>(async (context) => {

@@ -9,8 +9,15 @@ interface AuthCredentials {
 interface Jersey {
     id: string;
     number: string;
+    color: string;
     description: string;
     borrowed: boolean;
+}
+
+interface JerseyParams {
+    number: string;
+    color: string;
+    description: string;
 }
 
 interface BorrowedJerseyParams {
