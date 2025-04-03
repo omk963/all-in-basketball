@@ -10,19 +10,20 @@ interface Jersey {
     id: string;
     number: string;
     color: string;
+    size: string;
     description: string;
-    borrowed: boolean;
 }
 
 interface JerseyParams {
     number: string;
     color: string;
+    size: string;
     description: string;
 }
 
 interface BorrowedJerseyParams {
+    playerId: string;
     jerseyId: string;
-    userId: string;
 }
 
 import "next-auth";

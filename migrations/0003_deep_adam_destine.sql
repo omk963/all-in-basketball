@@ -1,0 +1,17 @@
+-- ALTER TABLE "borrow_records" DROP CONSTRAINT "borrow_records_player_id_players_user_id_fk";
+-- --> statement-breakpoint
+-- ALTER TABLE "player_jerseys" DROP CONSTRAINT "player_jerseys_player_id_players_user_id_fk";
+-- --> statement-breakpoint
+-- ALTER TABLE "player_positions" DROP CONSTRAINT "player_positions_player_id_users_id_fk";
+-- --> statement-breakpoint
+-- ALTER TABLE "player_seasons" DROP CONSTRAINT "player_seasons_player_id_players_user_id_fk";
+-- --> statement-breakpoint
+-- ALTER TABLE "player_teams" DROP CONSTRAINT "player_teams_player_id_players_user_id_fk";
+-- --> statement-breakpoint
+-- ALTER TABLE "players" ADD COLUMN "id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL;--> statement-breakpoint
+-- ALTER TABLE "borrow_records" ADD CONSTRAINT "borrow_records_player_id_players_id_fk" FOREIGN KEY ("player_id") REFERENCES "public"."players"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+-- ALTER TABLE "player_jerseys" ADD CONSTRAINT "player_jerseys_player_id_players_id_fk" FOREIGN KEY ("player_id") REFERENCES "public"."players"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+-- ALTER TABLE "player_positions" ADD CONSTRAINT "player_positions_player_id_players_id_fk" FOREIGN KEY ("player_id") REFERENCES "public"."players"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+-- ALTER TABLE "player_seasons" ADD CONSTRAINT "player_seasons_player_id_players_id_fk" FOREIGN KEY ("player_id") REFERENCES "public"."players"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+-- ALTER TABLE "player_teams" ADD CONSTRAINT "player_teams_player_id_players_id_fk" FOREIGN KEY ("player_id") REFERENCES "public"."players"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+-- ALTER TABLE "players" ADD CONSTRAINT "players_id_unique" UNIQUE("id");

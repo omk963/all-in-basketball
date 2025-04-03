@@ -1,0 +1,2 @@
+-- ALTER TABLE "player_positions" ADD COLUMN "id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL;--> statement-breakpoint
+-- ALTER TABLE "player_positions" ADD CONSTRAINT "player_positions_id_unique" UNIQUE("id");

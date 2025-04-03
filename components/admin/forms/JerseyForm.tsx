@@ -17,7 +17,6 @@ import { Jersey } from "@/types";
 import { jerseySchema } from "@/lib/validations";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import {
     Select,
     SelectContent,
@@ -50,8 +49,8 @@ const JerseyForm = ({ type, ...jersey }: Props) => {
         defaultValues: {
             number: '',
             color: '',
+            size: '',
             description: '',
-            borrowed: false,
         }
     })
     const selectedColor = form.watch('color');
@@ -70,7 +69,7 @@ const JerseyForm = ({ type, ...jersey }: Props) => {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
                     control={form.control}
                     name={'number'}
@@ -103,6 +102,32 @@ const JerseyForm = ({ type, ...jersey }: Props) => {
                                         <SelectItem value='YELLOW'>Yellow</SelectItem>
                                         <SelectItem value='BLUE'>Blue</SelectItem>
                                         <SelectItem value='ORANGE'>Orange</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name={'size'}
+                    render={({ field }) => (
+                        <FormItem className='flex flex-col gap-1'>
+                            <FormLabel className="font-normal text-xl">Jersey Size</FormLabel>
+                            <FormControl>
+                                <Select value={field.value} onValueChange={field.onChange}>
+                                    <SelectTrigger className='bg-white w-full'>
+                                        <SelectValue placeholder='Size' />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value='XS'>XS</SelectItem>
+                                        <SelectItem value='S'>S</SelectItem>
+                                        <SelectItem value='M'>M</SelectItem>
+                                        <SelectItem value='L'>L</SelectItem>
+                                        <SelectItem value='XL'>XL</SelectItem>
+                                        <SelectItem value='2XL'>2XL</SelectItem>
+                                        <SelectItem value='3XL'>3XL</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </FormControl>

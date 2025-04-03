@@ -15,7 +15,7 @@ export const signInSchema = z.object({
 
 export const jerseySchema = z.object({
     number: z.string().min(1).max(2),
-    color: z.string(),
+    color: z.string().nonempty("Color is required"),
+    size: z.string().nonempty("Size is required"),
     description: z.string().min(10).max(1000),
-    borrowed: z.boolean(),
 })

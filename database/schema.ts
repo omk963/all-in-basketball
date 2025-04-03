@@ -43,6 +43,7 @@ export const users = pgTable("users", {
 });
 
 export const players = pgTable("players", {
+  id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
   userId: uuid("user_id").references(() => users.id).notNull(),
   captain: boolean("captain").default(false).notNull(),
   yearsOfExperience: integer("years_of_experience").notNull().default(0),
@@ -56,7 +57,8 @@ export const positions = pgTable("positions", {
 });
 
 export const playerPositions = pgTable("player_positions", {
-  playerId: uuid("player_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+  playerId: uuid("player_id").notNull().references(() => players.id, { onDelete: "cascade" }),
   positionId: uuid("position_id").notNull().references(() => positions.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
@@ -70,7 +72,7 @@ export const teams = pgTable("teams", {
 
 export const playerTeams = pgTable("player_teams", {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
-  playerId: uuid("player_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  playerId: uuid("player_id").notNull().references(() => players.id, { onDelete: "cascade" }),
   teamId: uuid("team_id").notNull().references(() => teams.id, { onDelete: "cascade" }),
 })
 
@@ -85,7 +87,7 @@ export const jerseys = pgTable("jerseys", {
 
 export const playerJerseys = pgTable("player_jerseys", {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
-  playerId: uuid("player_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  playerId: uuid("player_id").notNull().references(() => players.id, { onDelete: "cascade" }),
   jerseyId: uuid("jersey_id").notNull().references(() => jerseys.id, { onDelete: "cascade" }),
   status: BORROW_STATUS_ENUM("status").default("BORROWED").notNull(),
   borrowDate: date("borrow_date").defaultNow().notNull(),
@@ -96,7 +98,7 @@ export const playerJerseys = pgTable("player_jerseys", {
 
 export const borrowRecords = pgTable("borrow_records", {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
-  playerId: uuid("player_id").references(() => users.id).notNull(),
+  playerId: uuid("player_id").references(() => players.id).notNull(),
   jerseyId: uuid("jersey_id").references(() => jerseys.id).notNull(),
   borrowDate: date("borrow_date").defaultNow().notNull(),
   dueDate: date("due_date"),
@@ -118,7 +120,7 @@ export const seasons = pgTable("seasons", {
 
 export const playerSeasons = pgTable("player_seasons", {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
-  playerId: uuid("player_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  playerId: uuid("player_id").notNull().references(() => players.id, { onDelete: "cascade" }),
   seasonId: uuid("season_id").notNull().references(() => seasons.id, { onDelete: "cascade" }),
   paid: boolean("paid").default(false),
   signedConsent: boolean("signed_consent").default(false),

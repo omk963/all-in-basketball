@@ -15,6 +15,27 @@
       "when": 1743575468974,
       "tag": "0001_groovy_goblin_queen",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1743656950547,
+      "tag": "0002_redundant_mach_iv",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1743657445182,
+      "tag": "0003_deep_adam_destine",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1743657636825,
+      "tag": "0004_polite_invisible_woman",
+      "breakpoints": true
     }
   ]
 }
