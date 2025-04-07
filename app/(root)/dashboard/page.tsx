@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { db } from '@/database/drizzle';
 import { users } from '@/database/schema';
 import { eq } from 'drizzle-orm';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { after } from 'next/server';
 import React from 'react'
@@ -34,6 +35,15 @@ const Page = async () => {
     return (
         <>
             <h1>Welcome Back, {session.user.firstName}!</h1>
+            <div>
+                <p className='text-sm text-gray-500'>
+                    This is your dashboard where you can manage your account, view your activity, and more.
+                </p>
+            </div>
+            <div>
+                Register for the upcoming league
+                <Link href='/dashboard/register'>Register</Link>
+            </div>
             <form action={async () => {
                 'use server';
 

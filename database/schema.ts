@@ -19,13 +19,45 @@ export const POSITION_ENUM = pgEnum("position", [
   "POWER-FORWARD",
   "CENTER"
 ]);
+
 export const BORROW_STATUS_ENUM = pgEnum("borrow_status", [
-  "BORROWED",
-  "RETURNED",
+  "AVAILABLE", // Jersey is available for borrowing
+  "BORROWED", // Jersey is currently borrowed by a player
+  "RETURNED", // Jersey has been returned by the player, but not yet processed
 ]);
-export const COLOR_ENUM = pgEnum("color",
-  ["SILVER", "BLACK", "BLUE", "GREEN", "YELLOW", "PINK", "ORANGE"]);
-export const SIZE_ENUM = pgEnum("size", ["XS", "S", "M", "L", "XL", "2XL", "3XL"]);
+export const StatusEnum = {
+  AVAILABLE: "AVAILABLE",
+  BORROWED: "BORROWED",
+  RETURNED: "RETURNED",
+} as const;
+export type StatusEnum = keyof typeof StatusEnum;
+
+export const COLOR_ENUM = pgEnum("color", [
+  "RED",
+  "ORANGE",
+  "GOLD",
+  "BLACK",
+  "WHITE",
+  "PRACTICE-RED",
+  "GREEN",
+  "ROYAL-BLUE",
+  "LIGHT-BLUE",
+  "PURPLE",
+  "PINK",
+  "PRACTICE-BLUE"
+]);
+export const SIZE_ENUM = pgEnum("size", ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"]);
+export const SizeEnum = {
+  XS: "XS",
+  S: "S",
+  M: "M",
+  L: "L",
+  XL: "XL",
+  "2XL": "2XL",
+  "3XL": "3XL",
+  "4XL": "4XL"
+} as const;
+export type SizeEnum = keyof typeof SizeEnum;
 
 export const SEASON_ENUM = pgEnum("season", ["WINTER", "SPRING", "SUMMER", "FALL"]);
 export const SEASON_TYPE_ENUM = pgEnum("season_type", ["3x3", "5x5"]);
@@ -82,6 +114,7 @@ export const jerseys = pgTable("jerseys", {
   color: COLOR_ENUM("color").notNull(),
   size: SIZE_ENUM("size").notNull(),
   description: text("description").notNull(),
+  status: BORROW_STATUS_ENUM("status").default("AVAILABLE").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
@@ -89,7 +122,6 @@ export const playerJerseys = pgTable("player_jerseys", {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
   playerId: uuid("player_id").notNull().references(() => players.id, { onDelete: "cascade" }),
   jerseyId: uuid("jersey_id").notNull().references(() => jerseys.id, { onDelete: "cascade" }),
-  status: BORROW_STATUS_ENUM("status").default("BORROWED").notNull(),
   borrowDate: date("borrow_date").defaultNow().notNull(),
   returnDate: date("return_date"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),

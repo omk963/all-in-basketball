@@ -32,13 +32,18 @@ interface Props extends Partial<Jersey> {
 }
 
 const colors = {
-    SILVER: "#B8B8B8",
-    BLACK: "#000000",
-    PINK: "#FDDBF8",
-    GREEN: "#00B167",
-    YELLOW: "#D2BD1F",
-    BLUE: "#0050D9",
-    ORANGE: "#FF9625",
+    "RED": "#FF0000",
+    "ORANGE": "#FFA500",
+    "GOLD": "#FFD700",
+    "BLACK": "#000000",
+    "WHITE": "#B8B8B8",
+    "GREEN": "#00B167",
+    "ROYAL-BLUE": "#4169E1",
+    "LIGHT-BLUE": "#ADD8E6",
+    "PURPLE": "#800080",
+    "PINK": "#FDDBF8",
+    "PRACTICE-RED": "#FF0000",
+    "PRACTICE-BLUE": "#00A2E8",
 };
 
 const JerseyForm = ({ type, ...jersey }: Props) => {
@@ -60,7 +65,7 @@ const JerseyForm = ({ type, ...jersey }: Props) => {
 
         if (res.success) {
             toast.success('Jersey added successfully');
-            router.push(`/admin/jerseys/${res.data.id}}`);
+            router.push(`/admin/jerseys/new`);
         } else {
             console.log(res)
             toast.error(res.message as string);
@@ -95,13 +100,18 @@ const JerseyForm = ({ type, ...jersey }: Props) => {
                                         <SelectValue placeholder='Color' />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value='SILVER'>Silver</SelectItem>
-                                        <SelectItem value='BLACK'>Black</SelectItem>
-                                        <SelectItem value='PINK'>Pink</SelectItem>
-                                        <SelectItem value='GREEN'>Green</SelectItem>
-                                        <SelectItem value='YELLOW'>Yellow</SelectItem>
-                                        <SelectItem value='BLUE'>Blue</SelectItem>
+                                        <SelectItem value='RED'>Red</SelectItem>
                                         <SelectItem value='ORANGE'>Orange</SelectItem>
+                                        <SelectItem value='GOLD'>Gold</SelectItem>
+                                        <SelectItem value='BLACK'>Black</SelectItem>
+                                        <SelectItem value='WHITE'>White</SelectItem>
+                                        <SelectItem value='GREEN'>Green</SelectItem>
+                                        <SelectItem value='ROYAL-BLUE'>Royal Blue</SelectItem>
+                                        <SelectItem value='LIGHT-BLUE'>Light Blue</SelectItem>
+                                        <SelectItem value='PURPLE'>Purple</SelectItem>
+                                        <SelectItem value='PINK'>Pink</SelectItem>
+                                        <SelectItem value='PRACTICE-RED'>Practice-Red</SelectItem>
+                                        <SelectItem value='PRACTICE-BLUE'>Practice-Blue</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </FormControl>
@@ -128,6 +138,7 @@ const JerseyForm = ({ type, ...jersey }: Props) => {
                                         <SelectItem value='XL'>XL</SelectItem>
                                         <SelectItem value='2XL'>2XL</SelectItem>
                                         <SelectItem value='3XL'>3XL</SelectItem>
+                                        <SelectItem value='4XL'>4XL</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </FormControl>

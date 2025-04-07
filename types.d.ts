@@ -21,6 +21,14 @@ interface JerseyParams {
     description: string;
 }
 
+interface Player {
+    id: string;
+    userId: string; // This is the id of the user in the users table
+    captain: boolean; // Indicates if the player is a captain
+    yearsOfExperience: number; // Years of experience the player has
+    positions?: string[]; // Array of position ids the player can play (optional)
+}
+
 interface BorrowedJerseyParams {
     playerId: string;
     jerseyId: string;

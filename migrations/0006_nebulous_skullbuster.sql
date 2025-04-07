@@ -1,0 +1,1 @@
+ALTER TYPE "public"."size" ADD VALUE '4XL';

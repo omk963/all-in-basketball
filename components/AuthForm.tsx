@@ -30,7 +30,6 @@ interface Props<T extends FieldValues> {
 const AuthForm = <T extends FieldValues>({ type, schema, defaultValues, onSubmit }: Props<T>) => {
     const router = useRouter();
     const isSignIn = (type === 'SIGN_IN');
-    console.log(FIELD_NAMES)
 
     const form: UseFormReturn<T> = useForm({
         resolver: zodResolver(schema),

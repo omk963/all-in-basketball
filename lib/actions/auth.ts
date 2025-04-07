@@ -8,7 +8,6 @@ import { auth, signIn } from "@/auth";
 import { headers } from "next/headers";
 import ratelimit from "../ratelimit";
 import { redirect } from "next/navigation";
-import { Session } from "next-auth";
 import { AuthCredentials } from "@/types";
 import { workflowClient } from "../workflow";
 import config from "../config";

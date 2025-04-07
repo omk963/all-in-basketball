@@ -18,4 +18,11 @@
         @apply flex flex-row items-center w-full gap-2 rounded-lg px-5 py-3.5 max-md:justify-center;
     }
 
+    .jersey-table {
+        @apply w-5/6 grid grid-cols-7 sm:grid-cols-8 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-7;
+    }
+
+    .user-table {
+        @apply w-full grid grid-cols-5 sm:grid-cols-6 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5;
+    }
 }

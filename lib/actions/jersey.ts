@@ -1,9 +1,10 @@
 'use server';
 
 import { db } from "@/database/drizzle";
-import { borrowRecords, playerJerseys } from "@/database/schema";
-import { eq } from "drizzle-orm";
+import { borrowRecords, jerseys, playerJerseys } from "@/database/schema";
+import { eq, and } from "drizzle-orm";
 import { BorrowedJerseyParams } from "@/types";
+import { StatusEnum, SizeEnum } from "@/database/schema";
 
 export const borrowJersey = async (params: BorrowedJerseyParams) => {
     const { playerId, jerseyId } = params;
@@ -13,7 +14,7 @@ export const borrowJersey = async (params: BorrowedJerseyParams) => {
         const jersey = await db
             .select()
             .from(playerJerseys)
-            .where(eq(playerJerseys.jerseyId, jerseyId) && eq(playerJerseys.status, "BORROWED"))
+            .where(eq(playerJerseys.jerseyId, jerseyId) && eq(jerseys.status, "BORROWED"))
             .limit(1);
 
         if (jersey.length > 0) {
@@ -35,8 +36,12 @@ export const borrowJersey = async (params: BorrowedJerseyParams) => {
         await db.insert(playerJerseys).values({
             playerId,
             jerseyId,
-            status: "BORROWED"
         })
+
+        // Update jersey status to BORROWED
+        await db.update(jerseys)
+            .set({ status: "BORROWED" })
+            .where(eq(jerseys.id, jerseyId));
 
         return ({
             success: true,
@@ -50,3 +55,17 @@ export const borrowJersey = async (params: BorrowedJerseyParams) => {
         };
     };
 };
+
+export const getAvailableNumbers = async (size: string) => {
+    const res = await db
+        .select()
+        .from(jerseys)
+        .where(
+            and(
+                eq(jerseys.size, SizeEnum[size as SizeEnum]),
+                eq(jerseys.status, StatusEnum.AVAILABLE)
+            )
+        );
+
+    return res;
+}
